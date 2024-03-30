@@ -50,7 +50,23 @@
             @enderror
         </div>
     </div>
-    <div class="col-11">
+    <div class="col-5">
+        <label for="category_id" class="form-label">Seleziona la categoria</label>
+        <select name="category_id" id="category_id"
+            class="form-select @error('category_id') is-invalid @elseif(old('category_id', '')) is-valid @enderror">
+            <option value="">Nessuna</option>
+            @foreach ($categories as $category)
+                <option value="{{ $category->id }}" @if (old('category_id', $project->category?->id) == $category->id) selected @endif>
+                    {{ $category->label }}</option>
+            @endforeach
+        </select>
+        @error('category_id')
+            <div class="invalid-feedback">
+                {{ $message }}
+            </div>
+        @enderror
+    </div>
+    <div class="col-6">
         <div>
             <label for="image" class="form-label">Immagine</label>
             <input type="file"

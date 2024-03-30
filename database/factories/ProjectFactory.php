@@ -2,8 +2,10 @@
 
 namespace Database\Factories;
 
+use App\Models\Category;
 use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Storage;
 
 /**
@@ -24,12 +26,16 @@ class ProjectFactory extends Factory
         $slug = Str::slug($title);
 
         $img = fake()->image(null, 250, 250);
-
         $img_url = Storage::putFileAs('project_images', $img, "$slug.png");
+
+        $category_ids = Category::pluck('id')->toArray();
+        $category_ids[] = null;
+
         return [
             'title' => $title,
             'slug' => $slug,
-            'content' => fake()->paragraph(15, true),
+            'category_id' => Arr::random($category_ids),
+            'content' => fake()->paragraphs(15, true),
             'image' => $img_url,
             'is_published' => fake()->boolean()
         ];

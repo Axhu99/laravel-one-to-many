@@ -6,6 +6,13 @@
 
     <header>
         <h1>{{ $project->title }}</h1>
+        <h5>Categoria: @if ($project->category)
+                <span class="badge"
+                    style="background-color:{{ $project->category->color }}">{{ $project->category->label }}</span>
+            @else
+                Nessuna
+            @endif
+        </h5>
     </header>
 
 

@@ -7,6 +7,7 @@ use Illuminate\Support\Str;
 use Illuminate\Support\Arr;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\Category;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
 
@@ -36,7 +37,8 @@ class ProjectController extends Controller
     public function create()
     {
         $project = new Project();
-        return view('admin.projects.create', compact('project'));
+        $categories = Category::select('label', 'id')->get();
+        return view('admin.projects.create', compact('project', 'categories'));
     }
 
     /**
@@ -49,6 +51,7 @@ class ProjectController extends Controller
             'content' => 'required|string',
             'image' => 'nullable|image|mimes:png,jpg,jpeg',
             'is_published' => 'nullable|boolean',
+            'category_id' => 'nullable|exists:categories.id'
         ], [
             'title.required' => 'Il titolo e\' obbligatorio',
             'title.unique' => 'Questo titolo e\' gia\' stato utilizzato',
@@ -58,6 +61,7 @@ class ProjectController extends Controller
             'image.image' => 'Le estensioni valide sono .png, .jpg, .jpeg',
             'is_published.boolean' => 'Il valore del campo pubblicazione non e\' valido',
             'content.required' => 'La descrizione e\' obblogatoria',
+            'category_id.exists' => 'Categoria non valida o non esiste'
         ]);
 
         $data = $request->all();
@@ -95,7 +99,8 @@ class ProjectController extends Controller
      */
     public function edit(Project $project)
     {
-        return view('admin.projects.edit', compact('project'));
+        $categories = Category::select('label', 'id')->get();
+        return view('admin.projects.edit', compact('project', 'categories'));
     }
 
     /**
@@ -108,6 +113,7 @@ class ProjectController extends Controller
             'content' => 'required|string',
             'image' => 'nullable|image|mimes:png,jpg,jpeg',
             'is_published' => 'nullable|boolean',
+            'category_id' => 'nullable|exists:categories,id'
         ], [
             'title.required' => 'Il titolo e\' obbligatorio',
             'title.unique' => 'Questo titolo e\' gia\' stato utilizzato',
@@ -117,6 +123,7 @@ class ProjectController extends Controller
             'image.image' => 'Le estensioni valide sono .png, .jpg, .jpeg',
             'is_published.boolean' => 'Il valore del campo pubblicazione non e\' valido',
             'content.required' => 'La descrizione e\' obblogatoria',
+            'category_id.exists' => 'Categoria non valida o non esiste'
         ]);
 
         $data = $request->all();
