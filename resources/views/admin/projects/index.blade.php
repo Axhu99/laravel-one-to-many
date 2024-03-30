@@ -28,6 +28,7 @@
                 <th scope="col">#</th>
                 <th scope="col">Titolo</th>
                 <th scope="col">Slug</th>
+                <th scope="col">Categoria</th>
                 <th scope="col">Pubblicato</th>
                 <th scope="col">Creato il</th>
                 <th scope="col">Ultima modifica</th>
@@ -46,6 +47,7 @@
                     <th scope="row">{{ $project->id }}</th>
                     <td>{{ $project->title }}</td>
                     <td>{{ $project->slug }}</td>
+                    <td>{{ $project->category ? $projects->category->label : '-' }}</td>
                     <td>
                         <form action="{{ route('admin.projects.publish', $project->id) }}" method="POST"
                             class="publication-form" onclick="this.submit()">
@@ -84,7 +86,7 @@
                 </tr>
             @empty
                 <tr>
-                    <td colspan="7">
+                    <td colspan="8">
                         <h3 class="text-center">Non ci sono PROGETTI</h3>
                     </td>
                 </tr>

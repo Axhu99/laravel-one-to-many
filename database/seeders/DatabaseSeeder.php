@@ -20,5 +20,7 @@ class DatabaseSeeder extends Seeder
         ]);
 
         \App\Models\Project::factory(14)->create();
+
+        $this->call(CategorySeeder::class);
     }
 }
